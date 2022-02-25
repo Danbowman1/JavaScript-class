@@ -6,10 +6,10 @@ const filter = document.querySelector('#filter');
 const taskInput = document.querySelector('#task');
 
 // Load all event listeners
-LoadEventListeners();
+loadEventListeners();
 
 // Load all event listeners
-function LoadEventListeners() {
+function loadEventListeners() {
     // DOM load event
     document.addEventListener('DOMContentLoaded', getTasks);
     // Add task event
@@ -136,7 +136,7 @@ function clearTask() {
         taskList.removeChild(taskList.firstChild);
     }
 
-
+    // Clear from LS
     clearTaskFromLocalStorage();
 }
 
