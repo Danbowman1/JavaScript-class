@@ -52,7 +52,7 @@ function getTasks() {
     });
 }
 
-// Add task
+// Add Task
 function addTask(e) {
     if(taskInput.value === '') {
         alert('Add a task');
@@ -64,9 +64,9 @@ function addTask(e) {
     li.className = 'collection-item';
     // Text node and append to li
     li.appendChild(document.createTextNode(taskInput.value));
-    // New link element
+    // New Link Element
     const link = document.createElement('a');
-    // Add class
+    // Add Class
     link.className = 'delete-item secondary-content';
     // Add icon html
     link.innerHTML = '<i class="fa fa-remove"></i>';
@@ -79,7 +79,7 @@ function addTask(e) {
     // Store in LS
     storeTaskInLocalStorage(taskInput.value);
 
-    // Clear input
+    // Clear Input
     taskInput.value = '';
 
     e.preventDefault();
@@ -104,13 +104,13 @@ function removeTask(e) {
         if(confirm('Are You Sure?')) {
         e.target.parentElement.parentElement.remove();
 
-        // Remove from LS
+        // Remove From LS
         removeTaskFromLocalStorage(e.target.parentElement.parentElement);
         }
     }
 }
 
-// Remove from LS
+// Remove From LS
 function removeTaskFromLocalStorage(taskItem) {
     let tasks;
     if(localStorage.getItem('tasks') === null){
@@ -128,7 +128,7 @@ function removeTaskFromLocalStorage(taskItem) {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Clear task
+// Clear Task
 function clearTask() {
     // taskList.innerHTML = ''
 
