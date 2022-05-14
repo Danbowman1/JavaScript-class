@@ -10,7 +10,8 @@ function UI() {
 
 }
 
-UI.prototype.addBookToList = function(book){
+// Add Book To List
+UI.prototype.addBookToList = function (book) {
     const list = document.getElementById('book-list')
     // Create tr element
     const row = document.createElement('tr')
@@ -23,18 +24,46 @@ UI.prototype.addBookToList = function(book){
     `
 
     list.appendChild(row)
-    
+
+}
+
+// Show Alert
+UI.prototype.showAlert = function(message, className) {
+    // Create div
+    const div = document.createElement('div')
+    // Add Classes
+    div.className = `alert ${className}`
+    // Add Text
+    div.appendChild(document.createTextNode(message))
+    // Get Parent
+    const container = document.querySelector('.container')
+    // Get Form
+    const form = document.querySelector('#book-form')
+    // Insert Alert
+    container.insertBefore(div, form)
+
+    // Timeout after 3 sec
+    setTimeout(function(){
+        document.querySelector('.alert').remove()
+    }, 3000)
+}
+
+// Delete Book
+UI.prototype.deleteBook = function(target) {
+    if(target.className === 'delete'){
+        target.parentElement.parentElement.remove()
+    }
 }
 
 // Clear field
-UI.prototype.clearFields = function(){
+UI.prototype.clearFields = function () {
     document.getElementById('title').value = ''
     document.getElementById('author').value = ''
     document.getElementById('isbn').value = ''
 }
 
 
-// Event Listeners
+// Event Listener for add book
 document.getElementById('book-form').addEventListener('submit',
     function (e) {
         // Get form values
@@ -48,11 +77,35 @@ document.getElementById('book-form').addEventListener('submit',
         // Instantiate UI
         const ui = new UI()
 
-        // Add book to list
-        ui.addBookToList(book)
-        
-        // Clear Fields
-        ui.clearFields()
+        // Validate
+        if(title === '' || author === '' || isbn === '' ) {
+            // Error alert
+            ui.showAlert('Please fill in all fields', 'error')
+        } else {
+            // Add book to list
+            ui.addBookToList(book)
+
+            // Show success
+            ui.showAlert('Book Added!', 'success')
+    
+            // Clear Fields
+            ui.clearFields()
+        }
+
+
+        e.preventDefault()
+    })
+
+    // Event Listener for delete
+    document.getElementById('book-list').addEventListener('click', function(e){
+
+        const ui = new UI()
+
+        // Delete book
+        ui.deleteBook(e.target)
+
+        // Show message
+        ui.showAlert('Book Removed', 'success')
 
         e.preventDefault()
     })
