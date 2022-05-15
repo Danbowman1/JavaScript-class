@@ -62,6 +62,48 @@ UI.prototype.clearFields = function () {
     document.getElementById('isbn').value = ''
 }
 
+// Local Storage
+function getBooks(){
+    let books
+        if(localStorage.getItem('books') === null) {
+            books = []
+        } else { 
+            books = JSON.parse(localStorage.getItem('books'))
+        }
+        
+        return books
+}
+
+function addBook(book){
+    const books = getBooks()
+
+        books.push(book)
+        localStorage.setItem('books', JSON.stringify(books))
+}
+
+function displayBooks() {
+    const books = getBooks()
+
+        books.forEach(function(book){
+            const ui = new UI
+
+            // Add Book to UI
+            ui.addBookToList(book)
+        })
+}
+
+function removeBook(isbn){
+    const books = getBooks()
+
+        books.forEach(function(book, index){
+            if(book.isbn === isbn){
+                books.splice(index, 1)
+            }
+        })
+
+        localStorage.setItem('books', JSON.stringify(books))
+    }
+
 
 // Event Listener for add book
 document.getElementById('book-form').addEventListener('submit',
@@ -85,6 +127,9 @@ document.getElementById('book-form').addEventListener('submit',
             // Add book to list
             ui.addBookToList(book)
 
+            // Add to LS
+            addBook(book)
+
             // Show success
             ui.showAlert('Book Added!', 'success')
     
@@ -96,6 +141,9 @@ document.getElementById('book-form').addEventListener('submit',
         e.preventDefault()
     })
 
+    //DOM load Event
+    document.addEventListener('DOMContentLoaded', displayBooks())
+
     // Event Listener for delete
     document.getElementById('book-list').addEventListener('click', function(e){
 
@@ -103,6 +151,9 @@ document.getElementById('book-form').addEventListener('submit',
 
         // Delete book
         ui.deleteBook(e.target)
+
+        // Remove from LS
+        removeBook(e.target.parentElement.previousElementSibling.textContent)
 
         // Show message
         ui.showAlert('Book Removed', 'success')
